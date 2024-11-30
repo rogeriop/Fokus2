@@ -1,11 +1,32 @@
 // encontrar o botão adicionar tarefa
 
 const btnAdicionarTarefa = document.querySelector(".app__button--add-task");
+const btnCancelarTarefa = document.querySelector('.app__form-footer__button--cancel');
 const formAdicionarTarefa = document.querySelector(".app__form-add-task");
 const textarea = document.querySelector(".app__form-textarea");
 const ulTarefas = document.querySelector(".app__section-task-list");
 
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+/*
+btnCancelarTarefa.onclick(() => cancelaTarefa);
+
+function cancelaTarefa() {
+ textarea.value = '';
+ formAdicionarTarefa.classList.add('hidden');   
+}
+
+const btn = document.querySelector('.app__form-footer__button--cancel');
+btn.addEventListener(() => {
+    textarea.value = '';
+    formAdicionarTarefa.classList.add('hidden');   
+    
+})
+
+*/
+function atualizarTarefas() {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+}
 
 function criarElementoTarefa(tarefa) {
     const li = document.createElement('li');
@@ -24,6 +45,16 @@ function criarElementoTarefa(tarefa) {
 
     const botao = document.createElement('button');
     const imagemBotao = document.createElement('img');
+
+    botao.onclick = () => {
+        debugger
+        const novaDescricao = prompt("Qual é o novo nome da tarefa?");
+        if(novaDescricao) {
+            paragrafo.textContent = novaDescricao;
+            tarefa.descricao = novaDescricao;
+            atualizarTarefas()
+        }
+    }
 
     imagemBotao.setAttribute('src', '/imagens/edit.png');
     botao.append(imagemBotao);
@@ -49,6 +80,7 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
     tarefas.push(tarefa);
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa);
+    atualizarTarefas();
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
     textarea.value = '';
     formAdicionarTarefa.classList.add('hidden');
@@ -58,3 +90,4 @@ tarefas.forEach(tarefa => {
     const elementoTarefa = criarElementoTarefa(tarefa);
     ulTarefas.append(elementoTarefa);
 })
+
